@@ -1,0 +1,88 @@
+>>> from news.models import *
+>>> u1 = User.objects.create_user(username='Vladimir')
+>>> u1
+<User: Vladimir>
+>>> u2 = User.objects.create_user(username='Den')
+>>> u2
+<User: Den>
+>>> Author.objects.create(authorUser=u1)
+<Author: Author object (1)>
+>>> Author.objects.create(authorUser=u2)
+<Author: Author object (2)>
+>>> Category.objects_create(name='Car')
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: type object 'Category' has no attribute 'objects_create'
+>>> Category.objects.create(name'Car')
+  File "<console>", line 1
+    Category.objects.create(name'Car')
+                                ^
+SyntaxError: invalid syntax
+>>> Category.objects.create(name='Car')
+<Category: Category object (1)>
+>>> Category.objects.create(name='Tuning')
+<Category: Category object (2)>
+>>> Category.objects.create(name='FAQ')
+<Category: Category object (3)>
+>>> Category.objects.create(name='ADS')
+<Category: Category object (4)>
+>>> author = Author.objects.get(id=1)
+>>> author
+<Author: Author object (1)>
+>>> Post.objects.create(author=author, categoryType='NW', title='Test Land Cruiser 300', text='only suffering')
+<Post: Post object (1)>
+>>> Post.objects.get(id=1).title
+'Test Land Cruiser 300'
+>>> Post.objects.create(author=author, categoryType='AR', title='Honda LIKE', text='Only Love Honda') 
+<Post: Post object (2)>
+>>> Post.objects.create(author=author, categoryType='AR', title='Nissan DISLIKE', text='
+Bought Nissan, suffer with it yourself')
+<Post: Post object (3)>
+>>> Post.objects.get(id=1).postCategory.add(Category.objects.get(id=1)) 
+>>> Comment.objects.create(commentPost=Post.objects.get(id=1).authorUser, commentUser=Au
+thor.objects.get(id=1), text='Car Love')
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'Post' object has no attribute 'authorUser'
+>>> Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.object
+s.get(id=1).authorUser, text='Car Love')
+<Comment: Comment object (1)>
+>>> Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=Author.object
+s.get(id=2).authorUser, text='VTEC LOVE') 
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\User\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\query.py", line 496, in get
+    raise self.model.DoesNotExist(
+news.models.Author.DoesNotExist: Author matching query does not exist.
+>>> Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=Author.objects.get(id=2).authorUser, text='AMG & M?')
+<Comment: Comment object (4)>
+>>> Comment.objects.get(id=1).like()
+>>> Comment.objects.get(id=1).rating
+1
+>>> Comment.objects.get(id=1).like()
+>>> Comment.objects.get(id=2).dislike()
+>>> a = Author.objects.get(id=1) 
+>>> a.update_rating()
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "C:\Users\User\PycharmProjects\newsportal\NewsPaper\news\models.py", line 13, in update_rating
+    print(postRat. pRat)
+AttributeError: 'dict' object has no attribute 'pRat'
+>>> a.update_rating()
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "C:\Users\User\PycharmProjects\newsportal\NewsPaper\news\models.py", line 13, in update_rating
+    pRat += postRat.get('postRating')
+AttributeError: 'dict' object has no attribute 'pRat'
+>>> Post.objects.get(id=1).like()
+>>> a.update_rating()
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "C:\Users\User\PycharmProjects\newsportal\NewsPaper\news\models.py", line 13, in update_rating
+    pRat += postRat.get('postRating')
+AttributeError: 'dict' object has no attribute 'pRat'
+>>> a.ratingAuthor
+0
+>>> a = Author.objects.order_by('-ratingAuthor')[:1]
+>>> a
+<QuerySet [<Author: Author object (1)>]>
+>>>

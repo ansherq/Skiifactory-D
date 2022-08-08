@@ -1,0 +1,19 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% block content %}
+
+<div>
+    <h1>{{ new.preview_name }}</h1>
+    <h1>{{ new.dateCreation|date:'d M Y, H:m'  }}</h1>
+    <p>{{ new.text }}</p>
+    <p>{{ new.commentText }}</p>
+</div>
+
+<br>
+
+<div>
+
+</div>
+
+{% endblock content %}
